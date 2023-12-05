@@ -22,10 +22,11 @@ func main() {
 	for scan.Scan() {
 		line := scan.Text()
 		split := strings.Split(line, ";")
+		var red int64 = 0
+		var green int64 = 0
+		var blue int64 = 0
+		poss := true
 		for _, ses := range split {
-			var red int64 = 0
-			var green int64 = 0
-			var blue int64 = 0
 			regreen := regexp.MustCompile(`(\d+)\s*green`)
 			if regreen.MatchString(ses) {
 				all := regreen.FindAllStringSubmatch(ses, -1)
@@ -50,12 +51,16 @@ func main() {
 					if err == nil { red += i }
 				}
 			}
-			if red == 12 && green == 13 && blue == 14 {
-				fmt.Println("FOUNDD", page)
-				sum += page
+			if red > 12 || green > 13 || blue > 14 {
+				poss = false
 			}
-			fmt.Println("GAME ", page, " / red = ", red, " / green = ", green, " / blue = ", blue, ses)
+			red = 0; green = 0; blue = 0;
 		}
+		if poss == true {
+			fmt.Println("GAME FOUND =", page)
+			sum += page
+		}
+		fmt.Println("GAME ", page, " / red = ", red, " / green = ", green, " / blue = ", blue)
 		page++
 	}
 	fmt.Println("SUM = ", sum)
