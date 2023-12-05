@@ -15,7 +15,7 @@ func main() {
 	if err != nil {
 		fmt.Println(err)
 	}
-	var sum int = 0
+	var sum int64 = 0
 	scan := bufio.NewScanner(file)
 	scan.Split(bufio.ScanLines)
 	page := 1
@@ -25,14 +25,13 @@ func main() {
 		var red int64 = 0
 		var green int64 = 0
 		var blue int64 = 0
-		poss := true
 		for _, ses := range split {
 			regreen := regexp.MustCompile(`(\d+)\s*green`)
 			if regreen.MatchString(ses) {
 				all := regreen.FindAllStringSubmatch(ses, -1)
 				for _, char := range all {
 					i, err := strconv.ParseInt(char[1], 0, 64)
-					if err == nil { green += i }
+					if err == nil && i > green { green = i }
 				}
 			}
 			reblue := regexp.MustCompile(`(\d+)\s*blue`)
@@ -40,7 +39,7 @@ func main() {
 				all := reblue.FindAllStringSubmatch(ses, -1)
 				for _, char := range all {
 					i, err := strconv.ParseInt(char[1], 0, 64)
-					if err == nil { blue += i }
+					if err == nil && i > blue { blue = i }
 				}
 			}
 			rered := regexp.MustCompile(`(\d+)\s*red`)
@@ -48,19 +47,11 @@ func main() {
 				all := rered.FindAllStringSubmatch(ses, -1)
 				for _, char := range all {
 					i, err := strconv.ParseInt(char[1], 0, 64)
-					if err == nil { red += i }
+					if err == nil && i > red { red = i }
 				}
 			}
-			if red > 12 || green > 13 || blue > 14 {
-				poss = false
-			}
-			red = 0; green = 0; blue = 0;
 		}
-		if poss == true {
-			fmt.Println("GAME FOUND =", page)
-			sum += page
-		}
-		fmt.Println("GAME ", page, " / red = ", red, " / green = ", green, " / blue = ", blue)
+		sum += red * green * blue
 		page++
 	}
 	fmt.Println("SUM = ", sum)
