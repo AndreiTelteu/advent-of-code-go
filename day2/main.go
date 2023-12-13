@@ -1,13 +1,12 @@
-
 package main
 
 import (
-"strings"
-"strconv"
-"regexp"
-"bufio"
-"fmt"
-"os"
+	"bufio"
+	"fmt"
+	"os"
+	"regexp"
+	"strconv"
+	"strings"
 )
 
 func main() {
@@ -31,7 +30,9 @@ func main() {
 				all := regreen.FindAllStringSubmatch(ses, -1)
 				for _, char := range all {
 					i, err := strconv.ParseInt(char[1], 0, 64)
-					if err == nil && i > green { green = i }
+					if err == nil && i > green {
+						green = i
+					}
 				}
 			}
 			reblue := regexp.MustCompile(`(\d+)\s*blue`)
@@ -39,7 +40,9 @@ func main() {
 				all := reblue.FindAllStringSubmatch(ses, -1)
 				for _, char := range all {
 					i, err := strconv.ParseInt(char[1], 0, 64)
-					if err == nil && i > blue { blue = i }
+					if err == nil && i > blue {
+						blue = i
+					}
 				}
 			}
 			rered := regexp.MustCompile(`(\d+)\s*red`)
@@ -47,7 +50,9 @@ func main() {
 				all := rered.FindAllStringSubmatch(ses, -1)
 				for _, char := range all {
 					i, err := strconv.ParseInt(char[1], 0, 64)
-					if err == nil && i > red { red = i }
+					if err == nil && i > red {
+						red = i
+					}
 				}
 			}
 		}

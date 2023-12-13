@@ -1,13 +1,11 @@
-
 package main
 
 import (
-//"strings"
-"strconv"
-"regexp"
-"bufio"
-"fmt"
-"os"
+	"bufio"
+	"fmt"
+	"os"
+	"regexp"
+	"strconv"
 )
 
 func main() {
@@ -24,15 +22,21 @@ func main() {
 	var total int64 = 0
 	for index, line := range lines {
 		reg := regexp.MustCompile(`[0-9]+`)
-		if !reg.MatchString(line) { continue }
+		if !reg.MatchString(line) {
+			continue
+		}
 		matches := reg.FindAllStringSubmatch(line, -1)
 		for _, match := range matches {
 			numIndex := findStr(line, match[0])
-			if numIndex == -1 { continue }
+			if numIndex == -1 {
+				continue
+			}
 			//fmt.Println(index, line, match[0], numIndex)
 			if hasAdjacent(lines, index, numIndex, len(match[0])) {
 				num, err := strconv.ParseInt(match[0], 0, 64)
-				if err == nil { total += num }
+				if err == nil {
+					total += num
+				}
 			}
 		}
 	}
@@ -54,7 +58,7 @@ func hasAdjacent(lines []string, index int, start int, length int) bool {
 		if start+length < len(lines[index-1]) && isSymbol(lines[index-1][start+length:start+length+1]) {
 			return true
 		}
-		if isSymbol(lines[index-1][start:start+length]) {
+		if isSymbol(lines[index-1][start : start+length]) {
 			return true
 		}
 	}
@@ -65,7 +69,7 @@ func hasAdjacent(lines []string, index int, start int, length int) bool {
 		if start+length < len(lines[index+1]) && isSymbol(lines[index+1][start+length:start+length+1]) {
 			return true
 		}
-		if isSymbol(lines[index+1][start:start+length]) {
+		if isSymbol(lines[index+1][start : start+length]) {
 			return true
 		}
 	}
@@ -79,7 +83,7 @@ func isSymbol(s string) bool {
 
 func findStr(haystack string, needle string) int {
 	for i := range haystack {
-		if haystack[i : i+len(needle)] == needle {
+		if haystack[i:i+len(needle)] == needle {
 			return i
 		}
 	}
